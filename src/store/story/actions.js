@@ -16,27 +16,28 @@ const action = (type, payload) => ({ type, payload });
 const actions = {
     fetchStoryIds: (payload = {}) => {
         return dispatch => {
-            dispatch(action(actionTypes.FETCH_STORY_IDS_REQUEST), payload);
+            dispatch(action(actionTypes.FETCH_STORY_IDS_REQUEST, payload));
 
             return hackerNewsApi.getTopStoryIds()
                 .then(storyIds => {
-                    dispatch(action(actionTypes.FETCH_STORY_IDS_SUCCESS), { storyIds });
+                    dispatch(action(actionTypes.FETCH_STORY_IDS_SUCCESS, { storyIds }));
                     dispatch(actions.fetchStories({ storyIds, page: 0 }));
                     return storyIds;
                 })
-                .catch(err => dispatch(action(actionTypes.FETCH_STORY_IDS_FAILURE), err));
-        }
+                .catch(err => dispatch(action(actionTypes.FETCH_STORY_IDS_FAILURE, err)));
+        };
     },
     fetchStories: (payload = {}) => {
         return dispatch => {
-            dispatch(action(actionTypes.FETCH_STORIES_REQUEST), payload);
             const { storyIds, page } = payload;
+            dispatch(action(actionTypes.FETCH_STORIES_REQUEST, payload));
+            
 
             return hackerNewsApi
                 .getStoriesByPage(storyIds, page)
-                .then(stories => dispatch(action(actionTypes.FETCH_STORIES_REQUEST), { stories }))
-                .catch(err => dispatch(action(actionTypes.FETCH_STORIES_REQUEST, err)));
-        }
+                .then(stories => dispatch(action(actionTypes.FETCH_STORIES_SUCCESS, { stories })))
+                .catch(err => dispatch(action(actionTypes.FETCH_STORIES_FAILURE, err)));
+        };
     },
 };
 
