@@ -4,7 +4,7 @@ import getArticleLink, { HN_USER, HN_ITEM } from 'utils/getArticleLink';
 
 import { Item, Title, Host, ExternalLink, Description, CommentLink } from './styles';
 
-const ListItem = ({ by, kids = [], score, url, title, id, type, time }) => {
+const ListItem = ({ by, kids = [], score, url, title, id }) => {
     const site = getSiteHostname(url) || 'news.ycombinator.com';
     const link = getArticleLink({ url, id });
     const commentUrl = `${HN_ITEM}${id}`;
